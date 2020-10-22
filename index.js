@@ -7,7 +7,7 @@ const store = {
   ],
   hideCheckedItems: false
 };
-
+ 
 const generateItemElement = function (item) {
   let itemTitle = `<span class='shopping-item shopping-item__checked'>${item.name}</span>`;
   if (!item.checked) {
@@ -25,6 +25,9 @@ const generateItemElement = function (item) {
         </button>
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
+        </button>
+        <button class='shopping-item-edit js-item-edit'>
+          <span class='button-label'>edit</span>
         </button>
       </div>
     </li>`;
@@ -145,6 +148,32 @@ const handleToggleFilterClick = function () {
   });
 };
 
+// Edit item functionality
+
+const editListItem = function (id) {
+  // Use the index variable funcionality from the deleteListItem function 
+  // to find the index of the item
+  const index = store.items.findIndex(item => item.id === id);
+  // Prompt the user for a new title
+  const newTitle = prompt('What is the new item name?');
+  // Amend the store to hold the prompted item name in the correct item
+  store.items[index].name = newTitle;
+};
+
+const handleEditItemClicked = function () {
+  $('.js-shopping-list').on('click', '.js-item-edit', event => {
+    
+    // Use the getItemIdFromElement function to find ID
+    const id = getItemIdFromElement(event.currentTarget);
+
+    // Call the editListItem function with the found ID to edit the specific
+    editListItem(id);
+    
+    // Re-render the html
+    render();
+  });
+};
+
 /**
  * This function will be our callback when the
  * page loads. It is responsible for initially 
@@ -159,6 +188,8 @@ const handleShoppingList = function () {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  // Call the new event listener with the others
+  handleEditItemClicked();
   handleToggleFilterClick();
 };
 
