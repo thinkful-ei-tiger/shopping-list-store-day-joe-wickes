@@ -155,7 +155,11 @@ const editListItem = function (id) {
   // to find the index of the item
   const index = store.items.findIndex(item => item.id === id);
   // Prompt the user for a new title
-  const newTitle = prompt('What is the new item name?');
+  let newTitle = prompt('What is the new item name?');
+  // Make sure that the prompt wasn't answered with an empty input
+  while (newTitle === '') {
+    newTitle = newTitle = prompt('Input can\'t be empty. What is the new item name?');
+  };
   // Amend the store to hold the prompted item name in the correct item
   store.items[index].name = newTitle;
 };
